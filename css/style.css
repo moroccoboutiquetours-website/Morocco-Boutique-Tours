@@ -1,0 +1,1285 @@
+/* =========================================================
+   Morocco Boutique Tours — Base Stylesheet
+   A quiet-luxury, editorial design language: confident
+   typography, generous whitespace, real photography leading
+   every composition, and a restrained jewel-tone palette used
+   sparingly as accent rather than decoration.
+   ========================================================= */
+
+:root {
+  --color-teal-900: #0f3d3a;
+  --color-teal-700: #14524e;
+  --color-teal-500: #1c6b65;
+  --color-terracotta: #c1652f;
+  --color-terracotta-dark: #a2521f;
+  --color-gold: #c9a24e;
+  --color-sand: #f6efe4;
+  --color-sand-dark: #ece1cf;
+  --color-ivory: #fbf8f2;
+  --color-charcoal: #2b2420;
+  --color-charcoal-soft: #4a4038;
+  --color-line: rgba(43,36,32,0.10);
+  --color-line-light: rgba(251,248,242,0.16);
+
+  --font-display: "Cormorant Garamond", Georgia, serif;
+  --font-body: "Jost", "Helvetica Neue", Arial, sans-serif;
+
+  --max-width: 1220px;
+
+  /* Soft, understated elevation — luxury reads through restraint */
+  --shadow-card: 0 6px 20px rgba(15,61,58,0.06);
+  --shadow-card-hover: 0 18px 40px rgba(15,61,58,0.12);
+  --shadow-header: 0 2px 16px rgba(0,0,0,0.06);
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; scroll-padding-top: 100px; }
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  color: var(--color-charcoal);
+  background: var(--color-ivory);
+  line-height: 1.65;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  color: var(--color-teal-900);
+  line-height: 1.14;
+  letter-spacing: -0.008em;
+  margin: 0 0 0.5em;
+}
+
+h1 { font-size: clamp(2.8rem, 5.4vw, 4.6rem); font-weight: 500; }
+h2 { font-size: clamp(2rem, 3vw, 2.75rem); }
+h3 { font-size: 1.5rem; }
+
+p { margin: 0 0 1em; }
+
+a { color: inherit; text-decoration: none; }
+
+.eyebrow {
+  display: inline-block;
+  font-family: var(--font-body);
+  text-transform: uppercase;
+  letter-spacing: 0.24em;
+  font-size: 0.7rem;
+  color: var(--color-terracotta);
+  font-weight: 500;
+  margin-bottom: 1em;
+}
+
+.container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 40px;
+}
+
+/* ---------- Header ---------- */
+
+.site-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 20;
+  padding: 26px 0;
+  background: transparent;
+  transition: background 0.35s ease, padding 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+  border-bottom: 1px solid transparent;
+}
+
+/* Solidifies to a clean white bar once scrolled — the minimal,
+   confident nav treatment used by the top luxury travel houses. */
+.site-header.scrolled {
+  background: rgba(251,248,242,0.96);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  padding: 13px 0;
+  box-shadow: var(--shadow-header);
+  border-bottom-color: var(--color-line);
+}
+
+.logo-img { transition: height 0.3s ease; }
+.site-header.scrolled .logo-img { height: 60px; }
+
+.site-header .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  margin-right: 14px;
+}
+
+.logo-img {
+  display: block;
+  height: 92px;
+  width: auto;
+  flex-shrink: 0;
+}
+
+.main-nav {
+  display: flex;
+  gap: 26px;
+  align-items: center;
+}
+
+.main-nav a {
+  color: var(--color-ivory);
+  font-size: 0.76rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 500;
+  white-space: nowrap;
+  padding-bottom: 3px;
+  border-bottom: 1px solid transparent;
+  transition: color 0.25s ease, border-color 0.25s ease;
+}
+
+.main-nav a:hover { border-bottom-color: currentColor; }
+
+.site-header.scrolled .main-nav a { color: var(--color-teal-900); }
+
+.main-nav .btn {
+  color: var(--color-teal-900);
+  border: 1px solid var(--color-teal-900);
+  padding: 10px 22px;
+  font-size: 0.7rem;
+  margin-left: 6px;
+  flex-shrink: 0;
+}
+.site-header:not(.scrolled) .main-nav .btn { color: var(--color-ivory); border-color: var(--color-ivory); }
+.main-nav .btn:hover { background: var(--color-teal-900); color: var(--color-ivory) !important; border-color: var(--color-teal-900) !important; }
+
+/* ---------- Nav dropdown (Tailored Morocco Tours by city) ---------- */
+
+.nav-dropdown { position: relative; }
+
+/* Invisible bridge so the cursor never leaves a hoverable area while
+   moving from the trigger down into the menu — without it, :hover drops
+   mid-transit and the menu closes before a click on any item registers. */
+.nav-dropdown::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 100%;
+  transform: translateX(-50%);
+  width: 210px;
+  height: 20px;
+}
+
+.nav-dropdown-trigger::after {
+  content: '\25BE';
+  display: inline-block;
+  margin-left: 5px;
+  font-size: 0.7em;
+  opacity: 0.7;
+  transition: transform 0.2s ease;
+}
+
+.nav-dropdown:hover .nav-dropdown-trigger::after,
+.nav-dropdown:focus-within .nav-dropdown-trigger::after { transform: rotate(180deg); }
+
+.main-nav .dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(10px);
+  background: var(--color-ivory);
+  border: 1px solid var(--color-line);
+  border-radius: 2px;
+  min-width: 210px;
+  padding: 14px 0;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  box-shadow: 0 20px 44px rgba(15,61,58,0.14);
+  z-index: 40;
+}
+
+.main-nav .dropdown-menu a {
+  display: block;
+  width: auto;
+  padding: 10px 22px;
+  white-space: nowrap;
+  font-size: 0.74rem;
+  color: var(--color-teal-900) !important;
+  border-bottom: none;
+}
+
+.main-nav .dropdown-menu a:hover { background: var(--color-sand); }
+
+.nav-dropdown:hover .dropdown-menu,
+.nav-dropdown:focus-within .dropdown-menu {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(4px);
+}
+
+/* ---------- Mobile nav toggle ---------- */
+
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 32px;
+  height: 32px;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  z-index: 30;
+  flex-shrink: 0;
+}
+
+.nav-toggle span {
+  display: block;
+  width: 100%;
+  height: 1.5px;
+  background: var(--color-ivory);
+  transition: transform 0.25s ease, opacity 0.2s ease, background 0.25s ease;
+}
+.site-header.scrolled .nav-toggle span { background: var(--color-teal-900); }
+.site-header.nav-open .nav-toggle span { background: var(--color-teal-900) !important; }
+
+.site-header.nav-open .nav-toggle span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+.site-header.nav-open .nav-toggle span:nth-child(2) { opacity: 0; }
+.site-header.nav-open .nav-toggle span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+/* ---------- Buttons ----------
+   Restrained by design: thin type, minimal chrome, a quiet
+   color shift on hover rather than motion or shadow bounce. */
+
+.btn {
+  display: inline-block;
+  padding: 15px 32px;
+  border: 1px solid var(--color-teal-900);
+  color: var(--color-teal-900);
+  font-size: 0.76rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  border-radius: 1px;
+  cursor: pointer;
+  transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+}
+
+.btn:hover { background: var(--color-teal-900); color: var(--color-ivory); }
+
+.btn-solid {
+  background: var(--color-terracotta);
+  border-color: var(--color-terracotta);
+  color: var(--color-ivory);
+}
+.btn-solid:hover { background: var(--color-terracotta-dark); border-color: var(--color-terracotta-dark); color: var(--color-ivory); }
+
+.btn-dark { border-color: var(--color-teal-900); color: var(--color-teal-900); }
+.btn-dark:hover { background: var(--color-teal-900); color: var(--color-ivory); }
+
+/* ---------- Hero ---------- */
+
+.hero {
+  position: relative;
+  min-height: 94vh;
+  display: flex;
+  align-items: flex-end;
+  padding-bottom: 110px;
+  background: linear-gradient(135deg, var(--color-teal-900), var(--color-teal-700));
+  color: var(--color-ivory);
+  overflow: hidden;
+}
+
+.hero::after {
+  content: "";
+  position: absolute; inset: 0; z-index: 2;
+  background: linear-gradient(0deg, rgba(10,24,22,0.72) 0%, rgba(10,24,22,0.08) 46%, rgba(10,24,22,0.28) 100%);
+  pointer-events: none;
+}
+
+.hero .container { position: relative; z-index: 3; }
+
+.hero-content { max-width: 660px; position: relative; z-index: 2; }
+
+.hero-content h1 { color: var(--color-ivory); }
+
+.hero-content-centered {
+  max-width: 760px;
+  margin: 0 auto;
+  text-align: center;
+}
+.hero-content-centered .lede { margin-left: auto; margin-right: auto; }
+.hero-content-centered .hero-actions { justify-content: center; }
+
+.hero p.lede {
+  font-size: 1.2rem;
+  font-weight: 300;
+  color: rgba(251,248,242,0.92);
+  max-width: 540px;
+}
+
+.hero-actions { margin-top: 38px; display: flex; gap: 20px; flex-wrap: wrap; }
+.hero-actions .btn:not(.btn-solid) { color: var(--color-ivory); border-color: var(--color-ivory); }
+.hero-actions .btn:not(.btn-solid):hover { background: var(--color-ivory); color: var(--color-teal-900); }
+
+.photo-note {
+  position: absolute;
+  bottom: 24px;
+  right: 40px;
+  z-index: 2;
+  font-size: 0.68rem;
+  color: rgba(251,248,242,0.5);
+  letter-spacing: 0.04em;
+}
+
+/* ---------- Sections ---------- */
+
+section {
+  padding: 84px 0;
+  color: inherit;
+  background: var(--color-ivory);
+}
+
+.section-sand { background: var(--color-sand); }
+
+.section-teal {
+  background: var(--color-teal-900);
+  color: var(--color-ivory);
+}
+.section-teal h2, .section-teal h3 { color: var(--color-ivory); }
+.section-teal .eyebrow { color: var(--color-gold); }
+
+.section-head {
+  max-width: 660px;
+  margin: 0 auto 72px;
+  text-align: center;
+}
+
+.section-head.left { margin: 0 0 72px; text-align: left; }
+
+/* A single fine rule beneath every section title — the one recurring
+   signature mark, deliberately quiet. */
+.section-head h2 { position: relative; padding-bottom: 26px; }
+.section-head h2::after {
+  content: "";
+  position: absolute; left: 50%; bottom: 0; transform: translateX(-50%);
+  width: 44px; height: 1px;
+  background: var(--color-gold);
+}
+.section-head.left h2::after { left: 0; transform: none; }
+
+.section-head p { color: var(--color-charcoal-soft); font-size: 1.05rem; }
+.section-teal .section-head p { color: rgba(251,248,242,0.78); }
+
+/* ---------- Cards / grids ---------- */
+
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 44px;
+}
+
+.grid-4 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 30px;
+}
+
+/* Editorial, photography-led card — image leads, caption sits in open
+   space below it. No border, no chrome, no overlap tricks. */
+.card {
+  display: block;
+  color: inherit;
+}
+
+.card-media {
+  aspect-ratio: 4 / 3;
+  border-radius: 4px;
+  overflow: hidden;
+  background: var(--color-teal-700);
+  position: relative;
+}
+.card-media > * { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.9s cubic-bezier(0.16,1,0.3,1); }
+.card[style*="background-image"] .card-media,
+.card-media[style*="background-image"] { background-size: cover; background-position: center; }
+.card:hover .card-media { box-shadow: var(--shadow-card-hover); }
+.card:hover .card-media,
+.card-media { transition: box-shadow 0.4s ease; }
+
+/* background-image cards (used throughout) zoom softly on hover via a
+   pseudo-element overlay that mirrors the element's own background and
+   is clipped by .card-media's own overflow: hidden. Scaling this overlay
+   (rather than animating background-size, which doesn't respect "cover"
+   once given an explicit size) always preserves full coverage regardless
+   of the photo's aspect ratio. */
+.card-media[style*="background-image"]::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: inherit;
+  background-size: cover;
+  background-position: inherit;
+  transform: translateZ(0);
+  transition: transform 0.9s cubic-bezier(0.16,1,0.3,1);
+}
+.card:hover .card-media[style*="background-image"]::before { transform: scale(1.08); }
+
+.card-media span {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  color: rgba(251,248,242,0.85);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.card-body { padding: 22px 2px 0; }
+
+.card-body .tag {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--color-terracotta);
+  font-weight: 500;
+}
+
+.card-body h3 { margin: 10px 0 10px; font-size: 1.36rem; }
+
+.card-body p { color: var(--color-charcoal-soft); font-size: 0.95rem; }
+
+.price {
+  margin-top: 16px;
+  padding-top: 15px;
+  border-top: 1px solid var(--color-line);
+  font-family: var(--font-display);
+  font-size: 1.14rem;
+  color: var(--color-teal-900);
+}
+
+/* Card price row: adds a visual "View Trip" CTA next to the price on every
+   tour card (related-tours widgets, index.html, tailored-tours-*.html).
+   The whole card is already the link, so this is a decorative pseudo-element
+   rather than a second real link — nesting an <a> inside the card's own <a>
+   would be invalid HTML and would fight the card's own click target. */
+.card-body .price {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px 14px;
+}
+.card-body .price-from { flex-basis: 100%; }
+.card-body .price::after {
+  content: "View Trip";
+  flex-shrink: 0;
+  padding: 10px 20px;
+  background: var(--color-terracotta);
+  color: var(--color-ivory);
+  font-family: var(--font-body);
+  font-size: 0.68rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  border-radius: 2px;
+  transition: background 0.3s ease;
+}
+.card:hover .card-body .price::after { background: var(--color-terracotta-dark); }
+
+.dest-chip {
+  padding: 30px 20px;
+  background: transparent;
+  border-top: 1px solid var(--color-line);
+  text-align: center;
+  transition: border-color 0.25s ease;
+}
+a.dest-chip:hover { border-color: var(--color-gold); }
+a.dest-chip:hover h4 { color: var(--color-terracotta); }
+
+.dest-chip h4 {
+  font-family: var(--font-display);
+  color: var(--color-teal-900);
+  margin: 0;
+  font-size: 1.25rem;
+  transition: color 0.25s ease;
+}
+
+.dest-chip span {
+  display: block;
+  margin-top: 8px;
+  font-size: 0.75rem;
+  color: var(--color-charcoal-soft);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+/* ---------- Split / story ---------- */
+
+.split {
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: 80px;
+  align-items: center;
+}
+
+.split > div:not(.media-block) { padding: 4px; }
+
+.media-block {
+  aspect-ratio: 4 / 5;
+  border-radius: 4px;
+  background: var(--color-teal-700);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.media-block span {
+  color: rgba(255,255,255,0.85);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+/* ---------- Testimonial ---------- */
+
+.testimonial {
+  max-width: 780px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.testimonial blockquote {
+  font-family: var(--font-display);
+  font-size: 1.75rem;
+  font-weight: 500;
+  font-style: italic;
+  color: var(--color-ivory);
+  margin: 0 0 26px;
+  line-height: 1.45;
+}
+
+.testimonial cite {
+  font-style: normal;
+  font-size: 0.76rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--color-gold);
+}
+
+/* ---------- Two-column teaser row ---------- */
+
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+}
+
+.mini-card {
+  padding: 0;
+}
+
+.mini-card .eyebrow { margin-bottom: 16px; }
+
+.mini-card a.link {
+  display: inline-block;
+  margin-top: 16px;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-terracotta);
+  border-bottom: 1px solid var(--color-terracotta);
+  padding-bottom: 2px;
+}
+
+/* ---------- CTA band ---------- */
+
+.cta-band {
+  background: var(--color-terracotta);
+  color: var(--color-ivory);
+  text-align: center;
+}
+
+.cta-band h2 { color: var(--color-ivory); }
+.cta-band .btn { border-color: var(--color-ivory); color: var(--color-ivory); }
+.cta-band .btn:hover { background: var(--color-ivory); color: var(--color-terracotta); }
+
+/* ---------- Footer ---------- */
+
+.site-footer {
+  background: var(--color-charcoal);
+  color: var(--color-sand);
+  padding: 84px 0 32px;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr 1fr;
+  gap: 40px;
+  margin-bottom: 60px;
+}
+
+.footer-grid h5 {
+  font-family: var(--font-body);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.74rem;
+  color: var(--color-gold);
+  margin: 0 0 18px;
+}
+
+.footer-grid ul { list-style: none; margin: 0; padding: 0; }
+.footer-grid li { margin-bottom: 11px; font-size: 0.9rem; }
+.footer-grid a:hover { color: var(--color-gold); }
+
+.footer-bottom {
+  border-top: 1px solid rgba(251,248,242,0.12);
+  padding-top: 26px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.74rem;
+  letter-spacing: 0.02em;
+  color: rgba(251,248,242,0.5);
+}
+
+/* ---------- Interior page header (sub-hero) ---------- */
+
+.page-header {
+  position: relative;
+  padding: 220px 0 96px;
+  background: linear-gradient(135deg, var(--color-teal-900), var(--color-teal-700));
+  color: var(--color-ivory);
+  overflow: hidden;
+}
+.page-header::after {
+  content: "";
+  position: absolute; inset: 0; z-index: 2;
+  background: linear-gradient(0deg, rgba(10,24,22,0.55) 0%, rgba(10,24,22,0.05) 60%);
+  pointer-events: none;
+}
+.page-header .container { position: relative; z-index: 3; }
+
+/* ---------- Header photo slider (hero + page-header) ---------- */
+.hero-slider { position: absolute; inset: 0; z-index: 0; }
+.hero-slide {
+  position: absolute; inset: 0;
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  animation: hero-slide-fade 12s ease-in-out infinite;
+}
+.hero-slide:nth-child(1) { animation-delay: 0s; }
+.hero-slide:nth-child(2) { animation-delay: 4s; }
+.hero-slide:nth-child(3) { animation-delay: 8s; }
+@keyframes hero-slide-fade {
+  0%, 100% { opacity: 0; }
+  4%, 32%  { opacity: 1; }
+  38%      { opacity: 0; }
+}
+.hero-slide-tint { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
+.hero .hero-slide-tint { background: linear-gradient(180deg, rgba(15,61,58,0.42) 0%, rgba(15,61,58,0.66) 100%); }
+.page-header .hero-slide-tint { background: linear-gradient(180deg, rgba(15,61,58,0.62) 0%, rgba(15,61,58,0.82) 100%); }
+@media (prefers-reduced-motion: reduce) {
+  .hero-slide { animation: none; opacity: 0; }
+  .hero-slide:first-child { opacity: 1; }
+}
+
+.page-header .eyebrow { color: var(--color-gold); }
+.page-header h1 { color: var(--color-ivory); font-size: clamp(2.3rem, 4vw, 3.4rem); }
+.page-header p { color: rgba(251,248,242,0.85); max-width: 580px; font-size: 1.08rem; }
+
+.breadcrumb {
+  font-size: 0.74rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgba(251,248,242,0.55);
+  margin-bottom: 20px;
+}
+.breadcrumb a { color: rgba(251,248,242,0.85); }
+.breadcrumb a:hover { color: var(--color-gold); }
+
+/* ---------- Process steps (Tailor-Made) ---------- */
+
+.steps-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 40px;
+  counter-reset: step;
+}
+
+.step { padding: 0; }
+
+.step-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border: 1px solid var(--color-gold);
+  border-radius: 50%;
+  color: var(--color-teal-900);
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  margin-bottom: 20px;
+}
+
+.step h3 { font-size: 1.2rem; margin-bottom: 10px; }
+.step p { font-size: 0.94rem; color: var(--color-charcoal-soft); margin: 0; }
+
+/* ---------- FAQ ---------- */
+
+.faq-category { margin-bottom: 56px; }
+.faq-category:last-child { margin-bottom: 0; }
+
+.faq-category h3 {
+  color: var(--color-terracotta);
+  font-family: var(--font-body);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.82rem;
+  font-weight: 500;
+  margin-bottom: 20px;
+}
+
+.faq-item {
+  border-bottom: 1px solid var(--color-line);
+  padding: 4px 0;
+}
+
+.faq-item summary {
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 2px;
+  font-family: var(--font-display);
+  font-size: 1.18rem;
+  color: var(--color-teal-900);
+}
+
+.faq-item summary::-webkit-details-marker { display: none; }
+
+.faq-item summary::after {
+  content: "+";
+  font-family: var(--font-body);
+  font-weight: 300;
+  font-size: 1.4rem;
+  color: var(--color-terracotta);
+  margin-left: 20px;
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+.faq-item[open] summary::after { transform: rotate(45deg); }
+
+.faq-item p {
+  padding: 0 2px 20px;
+  color: var(--color-charcoal-soft);
+  font-size: 0.96rem;
+  max-width: 720px;
+}
+
+/* ---------- Blog article ---------- */
+
+.article-meta {
+  max-width: 720px;
+  margin: 0 auto 8px;
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  font-size: 0.76rem;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--color-charcoal-soft);
+}
+
+.article-body { max-width: 720px; margin: 0 auto; }
+
+.article-body h2 { font-size: 1.85rem; margin-top: 1.7em; }
+.article-body h3 { font-size: 1.32rem; margin-top: 1.4em; }
+
+.article-body p {
+  color: var(--color-charcoal-soft);
+  font-size: 1.06rem;
+  line-height: 1.85;
+}
+
+.article-body ul, .article-body ol {
+  color: var(--color-charcoal-soft);
+  font-size: 1.06rem;
+  line-height: 1.85;
+  padding-left: 1.3em;
+  margin: 0 0 1em;
+}
+
+.article-body li { margin-bottom: 0.5em; }
+
+.article-body figure { margin: 2.4em 0; }
+.article-body figure img { width: 100%; display: block; border-radius: 4px; }
+.article-body figcaption {
+  font-size: 0.8rem;
+  color: var(--color-charcoal-soft);
+  margin-top: 12px;
+  text-align: center;
+}
+
+.article-body blockquote {
+  border-left: 2px solid var(--color-terracotta);
+  padding-left: 24px;
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-style: italic;
+  color: var(--color-teal-900);
+  margin: 2em 0;
+}
+
+/* ---------- Forms ---------- */
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.form-group { display: flex; flex-direction: column; gap: 9px; }
+.form-group.full { grid-column: 1 / -1; }
+
+.form-group label {
+  font-size: 0.74rem;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: var(--color-teal-900);
+  font-weight: 500;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  font-family: var(--font-body);
+  font-size: 0.96rem;
+  padding: 14px 4px;
+  border: none;
+  border-bottom: 1px solid var(--color-line);
+  border-radius: 0;
+  background: transparent;
+  color: var(--color-charcoal);
+}
+
+.form-group textarea { resize: vertical; min-height: 120px; border: 1px solid var(--color-line); padding: 14px; }
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--color-terracotta);
+}
+
+.form-actions { grid-column: 1 / -1; margin-top: 10px; }
+
+.form-note {
+  font-size: 0.82rem;
+  color: var(--color-charcoal-soft);
+  margin-top: 14px;
+}
+
+/* ---------- Contact info list ---------- */
+
+.contact-info-list { display: flex; flex-direction: column; gap: 28px; }
+.contact-info-list h4 {
+  font-family: var(--font-body);
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  font-size: 0.74rem;
+  color: var(--color-gold);
+  margin: 0 0 7px;
+}
+.contact-info-list p { margin: 0; color: rgba(251,248,242,0.85); }
+
+/* ---------- Post meta (Blog) ---------- */
+
+.post-meta {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--color-terracotta);
+  margin-bottom: 10px;
+}
+
+/* ---------- Team ---------- */
+
+.team-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 44px; }
+
+/* ---------- Contact layout ---------- */
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  gap: 60px;
+  align-items: start;
+}
+
+.contact-panel {
+  background: var(--color-teal-900);
+  color: var(--color-ivory);
+  border-radius: 4px;
+  padding: 46px 40px;
+}
+
+.contact-panel .eyebrow { color: var(--color-gold); }
+.contact-panel h3 { color: var(--color-ivory); font-size: 1.45rem; }
+
+/* ---------- Tour quick facts ---------- */
+
+.tour-facts {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  background: var(--color-ivory);
+  border: 1px solid var(--color-line);
+  margin-top: -74px;
+  position: relative;
+  z-index: 5;
+}
+
+.tour-fact {
+  padding: 28px 24px;
+  border-right: 1px solid var(--color-line);
+  text-align: center;
+}
+
+.tour-fact:last-child { border-right: none; }
+
+.tour-fact .label {
+  display: block;
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-terracotta);
+  margin-bottom: 8px;
+}
+
+.tour-fact .value {
+  font-family: var(--font-display);
+  font-size: 1.24rem;
+  color: var(--color-teal-900);
+  font-weight: 600;
+}
+
+/* ---------- Itinerary ---------- */
+
+.itinerary { max-width: 820px; }
+
+.itinerary-day {
+  display: grid;
+  grid-template-columns: 60px 1fr;
+  gap: 30px;
+  padding-bottom: 48px;
+  margin-bottom: 48px;
+  border-bottom: 1px solid var(--color-line);
+}
+
+.itinerary-day:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.day-number {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: var(--color-gold);
+  line-height: 1;
+  padding-top: 4px;
+}
+
+.itinerary-day h3 { margin-bottom: 12px; }
+.itinerary-day p { color: var(--color-charcoal-soft); }
+
+.day-tags { display: flex; gap: 22px; flex-wrap: wrap; margin-top: 16px; }
+
+.day-tags span {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-charcoal-soft);
+  padding: 0;
+}
+
+/* ---------- Includes / Excludes ---------- */
+
+.includes-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 50px;
+}
+
+.includes-panel { padding: 0; }
+
+.includes-panel h3 { font-size: 1.18rem; margin-bottom: 20px; }
+
+.includes-panel ul { list-style: none; margin: 0; padding: 0; }
+
+.includes-panel li {
+  padding: 10px 0 10px 28px;
+  position: relative;
+  font-size: 0.95rem;
+  color: var(--color-charcoal-soft);
+  border-bottom: 1px solid var(--color-line);
+}
+
+.includes-panel li:last-child { border-bottom: none; }
+
+.includes-panel.included li::before {
+  content: "+";
+  position: absolute;
+  left: 0;
+  color: var(--color-teal-500);
+  font-weight: 600;
+}
+
+.includes-panel.excluded li::before {
+  content: "\2212";
+  position: absolute;
+  left: 0;
+  color: var(--color-terracotta);
+  font-weight: 600;
+}
+
+/* ---------- Gallery ---------- */
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+}
+
+.gallery-grid img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: 4px;
+  display: block;
+  transition: transform 0.6s cubic-bezier(0.16,1,0.3,1);
+}
+.gallery-grid a { display: block; overflow: hidden; border-radius: 4px; }
+.gallery-grid a:hover img { transform: scale(1.05); }
+
+.gallery-grid .span-2 { grid-column: span 2; grid-row: span 2; }
+.gallery-grid .span-2 img { aspect-ratio: 1 / 1; height: 100%; }
+
+/* ---------- Tour price box ---------- */
+
+.price-box {
+  background: var(--color-teal-900);
+  color: var(--color-ivory);
+  border-radius: 4px;
+  padding: 48px 44px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+
+.price-box .eyebrow { color: var(--color-gold); }
+.price-box h3 { color: var(--color-ivory); margin-bottom: 8px; }
+.price-box .price-value { font-family: var(--font-display); font-size: 2rem; color: var(--color-ivory); }
+.price-box .price-note { font-size: 0.82rem; color: rgba(251,248,242,0.6); margin-top: 8px; }
+.price-box .price-actions { display: flex; gap: 16px; flex-wrap: wrap; }
+
+.price-tiers {
+  display: grid;
+  grid-template-columns: repeat(4, auto);
+  gap: 30px;
+  margin: 20px 0 6px;
+}
+
+.price-tier { text-align: left; }
+
+.price-tier .tier-label {
+  display: block;
+  font-size: 0.66rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-gold);
+  margin-bottom: 5px;
+}
+
+.price-tier .tier-value {
+  font-family: var(--font-display);
+  font-size: 1.55rem;
+  color: var(--color-ivory);
+}
+
+.price-tier .tier-value small { font-family: var(--font-body); font-size: 0.7rem; color: rgba(251,248,242,0.6); }
+
+.price-from { font-size: 0.78rem; color: var(--color-charcoal-soft); display: block; margin-top: 3px; font-family: var(--font-body); font-weight: 400; }
+
+/* ---------- Related tours ---------- */
+
+.related-tours { display: grid; grid-template-columns: repeat(3, 1fr); gap: 44px; }
+
+/* ---------- Content panel (page-header text over photo) ---------- */
+
+.content-panel { position: relative; }
+.content-panel-warm { }
+.content-panel > *:last-child { margin-bottom: 0; }
+
+/* ---------- Legacy hooks kept as plain, unstyled pass-throughs so no
+   HTML needs to change: the site no longer uses zellige tile textures
+   or arch-shaped photo/panel masks anywhere. ---------- */
+.arch-media { border-radius: 4px; }
+.arch-cards .card-media { aspect-ratio: 4 / 3; }
+.text-panel { }
+
+/* ---------- Scroll reveal ---------- */
+
+@media (prefers-reduced-motion: no-preference) {
+  .reveal {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: opacity, transform;
+  }
+  .reveal.is-visible { opacity: 1; transform: none; }
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 1050px) {
+  .nav-toggle { display: flex; }
+
+  .main-nav {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+    background: var(--color-ivory);
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    pointer-events: none;
+    transition: max-height 0.3s ease, opacity 0.2s ease;
+    padding: 0 40px;
+    box-shadow: var(--shadow-header);
+  }
+
+  .main-nav a { color: var(--color-teal-900) !important; }
+
+  .main-nav a {
+    width: 100%;
+    padding: 16px 0;
+    font-size: 0.85rem;
+    letter-spacing: 0.06em;
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  .main-nav a.btn {
+    width: auto;
+    margin: 16px 0;
+    padding: 14px 30px;
+    font-size: 0.8rem;
+    border-bottom: none;
+  }
+
+  .site-header.nav-open .main-nav {
+    max-height: calc(100vh - 90px);
+    overflow-y: auto;
+    opacity: 1;
+    pointer-events: auto;
+    padding-bottom: 12px;
+  }
+
+  .nav-dropdown { width: 100%; }
+
+  /* On mobile the trigger becomes a tap-to-expand row (rather than a real
+     link, since there's no hover) so the 5 city links stay collapsed by
+     default instead of permanently padding out the menu — see the click
+     handler in js/script.js that toggles this same .mobile-open class. */
+  .nav-dropdown-trigger {
+    display: flex !important;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .nav-dropdown-trigger::after { transition: transform 0.25s ease; }
+  .nav-dropdown.mobile-open .nav-dropdown-trigger::after { transform: rotate(180deg); }
+
+  .main-nav .dropdown-menu {
+    position: static;
+    transform: none;
+    margin-top: 0;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    background: var(--color-sand);
+    border: none;
+    box-shadow: none;
+    min-width: 0;
+    padding: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+  }
+
+  /* The desktop hover/focus-within rule (defined outside any media query)
+     still fires here on tap, since tapping the trigger focuses it — without
+     this override its translateX(-50%) centering, meant for the floating
+     desktop dropdown, would carry over and shove the mobile menu sideways. */
+  .nav-dropdown:hover .dropdown-menu,
+  .nav-dropdown:focus-within .dropdown-menu {
+    transform: none;
+  }
+
+  .nav-dropdown.mobile-open .dropdown-menu { max-height: 320px; }
+
+  .main-nav .dropdown-menu a {
+    padding: 12px 0 12px 18px;
+    font-size: 0.78rem;
+    border-bottom: 1px solid var(--color-line);
+  }
+}
+
+@media (max-width: 1150px) {
+  .hero-content-centered { max-width: 92%; }
+}
+
+@media (max-width: 900px) {
+  .grid-3 { grid-template-columns: 1fr; }
+  .grid-4 { grid-template-columns: 1fr 1fr; }
+  .split { grid-template-columns: 1fr; gap: 40px; }
+  .two-col { grid-template-columns: 1fr; }
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+  .steps-grid { grid-template-columns: 1fr 1fr; }
+  .form-grid { grid-template-columns: 1fr; }
+  .team-grid { grid-template-columns: 1fr; }
+  .contact-grid { grid-template-columns: 1fr; }
+  section { padding: 56px 0; }
+  .page-header { padding: 180px 0 68px; }
+  .hero { padding-bottom: 80px; padding-top: 130px; }
+
+  .tour-facts { grid-template-columns: 1fr 1fr; margin-top: 0; }
+  .tour-fact { border-bottom: 1px solid var(--color-line); }
+  .tour-fact:nth-child(2n) { border-right: none; }
+  .itinerary-day { grid-template-columns: 40px 1fr; gap: 16px; }
+  .includes-grid { grid-template-columns: 1fr; gap: 36px; }
+  .gallery-grid { grid-template-columns: 1fr 1fr; }
+  .gallery-grid .span-2 { grid-column: span 2; grid-row: span 1; }
+  .gallery-grid .span-2 img { aspect-ratio: 4/3; }
+  .price-box { flex-direction: column; align-items: flex-start; text-align: left; }
+  .price-tiers { grid-template-columns: 1fr 1fr; }
+  .related-tours { grid-template-columns: 1fr; }
+}

@@ -1,0 +1,19 @@
+# Morocco Boutique Tours
+
+> Morocco Boutique Tours is a private, chauffeur-driven tour operator based in Maarif, Casablanca, Morocco. Every Signature Journey and Tailor-Made trip includes a dedicated driver-guide and private vehicle for the traveler's own party only — no shared coaches or joining a group of strangers. Trips range from 2 to 15 days and combine imperial cities (Casablanca, Rabat, Fes, Marrakech), the Blue City of Chefchaouen, the Sahara Desert dunes of Merzouga and Erg Chigaga, the Dades and Ziz valleys, the High Atlas Mountains, and the Atlantic coast at Essaouira. Prices are per person, twin/double share, in EUR, and are shown per itinerary with single/double/triple/quadruple room tiers.
+
+## Key pages
+
+- [Signature Journeys](https://www.moroccoboutiquetours.com/tours.html): fixed private itineraries departing from Casablanca, from 6 to 15 days.
+- [Tailor-Made Trips](https://www.moroccoboutiquetours.com/tailor-made.html): fully custom private itineraries, plus city-specific hubs for tours departing from [Casablanca](https://www.moroccoboutiquetours.com/tailored-tours-casablanca.html), [Marrakech](https://www.moroccoboutiquetours.com/tailored-tours-marrakech.html), [Fes](https://www.moroccoboutiquetours.com/tailored-tours-fes.html), [Agadir](https://www.moroccoboutiquetours.com/tailored-tours-agadir.html), and [Tangier](https://www.moroccoboutiquetours.com/tailored-tours-tangier.html).
+- [Destinations](https://www.moroccoboutiquetours.com/destinations.html): the cities, mountains, and desert regions covered across itineraries.
+- [Our Story](https://www.moroccoboutiquetours.com/our-story.html): the founder and the local guide team, each based in the region they guide.
+- [Blog](https://www.moroccoboutiquetours.com/blog.html): destination guides and trip-planning articles (best time to visit the Sahara, what to pack, riad etiquette, and more).
+- [FAQs](https://www.moroccoboutiquetours.com/faqs.html): booking, payment, inclusions, and practical travel questions.
+- [Contact](https://www.moroccoboutiquetours.com/contact.html): enquiry form, email (moroccoboutiquetours@gmail.com), and phone/WhatsApp (+212 771 822 758).
+
+## Notes for AI assistants and search tools
+
+- Every individual tour page (`tour-*.html`) carries structured data (`TouristTrip` schema) with the full day-by-day itinerary, accommodation, and per-room-type pricing, plus an on-page FAQ section answering the most common questions about that specific itinerary (private vs. shared, what's included, best time to travel, physical difficulty, and flexibility to adjust dates).
+- All tours are private and chauffeur-driven — Morocco Boutique Tours does not operate shared/group coach tours.
+- Sitemap: https://www.moroccoboutiquetours.com/sitemap.xml
