@@ -1283,3 +1283,52 @@ a.dest-chip:hover h4 { color: var(--color-terracotta); }
   .price-tiers { grid-template-columns: 1fr 1fr; }
   .related-tours { grid-template-columns: 1fr; }
 }
+
+/* ---------- Cookie consent banner ---------- */
+
+.cookie-banner {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 60;
+  background: var(--color-charcoal);
+  color: var(--color-ivory);
+  box-shadow: 0 -8px 30px rgba(0,0,0,0.18);
+}
+
+.cookie-banner-inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 20px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.cookie-banner p {
+  margin: 0;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: rgba(251,248,242,0.85);
+  max-width: 640px;
+}
+
+.cookie-banner a { color: var(--color-ivory); text-decoration: underline; }
+
+.cookie-banner-actions {
+  display: flex;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.cookie-banner .btn { padding: 12px 26px; }
+.cookie-banner .btn-dark { border-color: rgba(251,248,242,0.5); color: var(--color-ivory); }
+.cookie-banner .btn-dark:hover { background: rgba(251,248,242,0.12); color: var(--color-ivory); }
+
+@media (max-width: 640px) {
+  .cookie-banner-inner { flex-direction: column; align-items: stretch; text-align: left; }
+  .cookie-banner-actions { justify-content: flex-end; }
+}

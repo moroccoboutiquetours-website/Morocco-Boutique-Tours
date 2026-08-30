@@ -70,4 +70,49 @@ document.addEventListener('DOMContentLoaded', function () {
       });
     }
   }
+
+  // Cookie consent banner — analytics stays off (Consent Mode default in
+  // every page's <head>) until the visitor explicitly accepts here.
+  var CONSENT_KEY = 'mbt_cookie_consent';
+
+  function getStoredConsent() {
+    try { return localStorage.getItem(CONSENT_KEY); } catch (e) { return null; }
+  }
+
+  function storeConsent(value) {
+    try { localStorage.setItem(CONSENT_KEY, value); } catch (e) {}
+  }
+
+  function updateAnalyticsConsent(granted) {
+    if (typeof gtag === 'function') {
+      gtag('consent', 'update', { analytics_storage: granted ? 'granted' : 'denied' });
+    }
+  }
+
+  if (!getStoredConsent()) {
+    var banner = document.createElement('div');
+    banner.className = 'cookie-banner';
+    banner.setAttribute('role', 'region');
+    banner.setAttribute('aria-label', 'Cookie consent');
+    banner.innerHTML =
+      '<div class="cookie-banner-inner">' +
+        '<p>We use cookies to understand how visitors use this site. You can accept or decline analytics cookies — see our <a href="privacy-policy.html">Privacy Policy</a>.</p>' +
+        '<div class="cookie-banner-actions">' +
+          '<button type="button" class="btn btn-dark cookie-decline">Decline</button>' +
+          '<button type="button" class="btn btn-solid cookie-accept">Accept</button>' +
+        '</div>' +
+      '</div>';
+    document.body.appendChild(banner);
+
+    banner.querySelector('.cookie-accept').addEventListener('click', function () {
+      storeConsent('granted');
+      updateAnalyticsConsent(true);
+      banner.remove();
+    });
+    banner.querySelector('.cookie-decline').addEventListener('click', function () {
+      storeConsent('denied');
+      updateAnalyticsConsent(false);
+      banner.remove();
+    });
+  }
 });
