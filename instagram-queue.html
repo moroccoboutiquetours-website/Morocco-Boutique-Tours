@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32.png">
+<title>Instagram Queue — Morocco Boutique Tours</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<style>
+  body { background: var(--color-sand); }
+  .admin-wrap { max-width: 760px; margin: 0 auto; padding: 48px 24px 96px; }
+  .admin-wrap h1 { font-family: var(--font-display); color: var(--color-teal-900); margin-bottom: 4px; }
+  .admin-wrap p.lede { color: var(--color-charcoal-soft); margin-top: 0; }
+  .panel { background: var(--color-ivory); border-radius: 10px; box-shadow: var(--shadow-card); padding: 28px; margin-bottom: 28px; }
+  label { display: block; font-size: 0.9rem; margin: 14px 0 6px; color: var(--color-charcoal-soft); }
+  input[type="password"], input[type="text"], textarea, input[type="file"] {
+    width: 100%; padding: 10px 12px; border: 1px solid var(--color-line); border-radius: 6px;
+    font-family: var(--font-body); font-size: 0.95rem; background: #fff;
+  }
+  textarea { min-height: 70px; resize: vertical; }
+  button {
+    font-family: var(--font-body); font-weight: 500; letter-spacing: 0.02em;
+    background: var(--color-teal-700); color: #fff; border: none; border-radius: 6px;
+    padding: 11px 22px; cursor: pointer; margin-top: 16px;
+  }
+  button:hover { background: var(--color-teal-900); }
+  button:disabled { opacity: 0.5; cursor: not-allowed; }
+  .file-row { border: 1px solid var(--color-line); border-radius: 8px; padding: 14px; margin-top: 14px; }
+  .status-msg { margin-top: 12px; font-size: 0.9rem; }
+  .status-msg.error { color: var(--color-terracotta-dark); }
+  .status-msg.ok { color: var(--color-teal-700); }
+  table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+  th, td { text-align: left; padding: 8px 6px; border-bottom: 1px solid var(--color-line); vertical-align: top; }
+  .pill { display: inline-block; padding: 2px 9px; border-radius: 999px; font-size: 0.75rem; }
+  .pill-pending { background: var(--color-sand-dark); color: var(--color-charcoal-soft); }
+  .pill-processing { background: rgba(201,162,78,0.2); color: var(--color-terracotta-dark); }
+  .pill-posted { background: rgba(28,107,101,0.15); color: var(--color-teal-900); }
+  .pill-failed { background: rgba(193,101,47,0.15); color: var(--color-terracotta-dark); }
+  #app-hidden { display: none; }
+</style>
+</head>
+<body>
+<div class="admin-wrap">
+  <h1>Instagram Queue</h1>
+  <p class="lede">Private tool — not linked from the site. Upload photos/reels here; one item posts to Instagram automatically each day around 10:00 (Morocco time).</p>
+
+  <div class="panel" id="login-panel">
+    <label for="password">Password</label>
+    <input type="password" id="password" autocomplete="current-password">
+    <button id="login-btn">Sign in</button>
+    <p class="status-msg error" id="login-error"></p>
+  </div>
+
+  <div id="app-hidden">
+    <div class="panel">
+      <h2 style="font-family: var(--font-display); color: var(--color-teal-900); margin-top:0;">Add to queue</h2>
+      <label for="file-input">Photos / reels</label>
+      <input type="file" id="file-input" accept="image/*,video/*" multiple>
+      <div id="file-rows"></div>
+      <button id="upload-btn" disabled>Upload &amp; queue</button>
+      <p class="status-msg" id="upload-status"></p>
+    </div>
+
+    <div class="panel">
+      <h2 style="font-family: var(--font-display); color: var(--color-teal-900); margin-top:0;">Queue status</h2>
+      <button id="refresh-btn" style="margin-top:0;">Refresh</button>
+      <table id="queue-table">
+        <thead><tr><th>When</th><th>Type</th><th>Caption</th><th>Status</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Cloud name and unsigned preset name are not secrets (Cloudinary's unsigned-upload
+  // design assumes they're public) — fill these in once the Cloudinary account exists.
+  window.MBT_CLOUDINARY_CLOUD_NAME = '';
+  window.MBT_CLOUDINARY_UPLOAD_PRESET = '';
+</script>
+<script>
+(function () {
+  var CLOUDINARY_CLOUD_NAME = window.MBT_CLOUDINARY_CLOUD_NAME || '';
+  var CLOUDINARY_UPLOAD_PRESET = window.MBT_CLOUDINARY_UPLOAD_PRESET || '';
+
+  var loginPanel = document.getElementById('login-panel');
+  var appHidden = document.getElementById('app-hidden');
+  var loginError = document.getElementById('login-error');
+  var fileInput = document.getElementById('file-input');
+  var fileRows = document.getElementById('file-rows');
+  var uploadBtn = document.getElementById('upload-btn');
+  var uploadStatus = document.getElementById('upload-status');
+  var queueTableBody = document.querySelector('#queue-table tbody');
+
+  document.getElementById('login-btn').addEventListener('click', function () {
+    var password = document.getElementById('password').value;
+    loginError.textContent = '';
+    fetch('/.netlify/functions/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ password: password }),
+    }).then(function (res) {
+      if (!res.ok) throw new Error('Incorrect password');
+      loginPanel.style.display = 'none';
+      appHidden.style.display = 'block';
+      loadQueue();
+    }).catch(function (err) {
+      loginError.textContent = err.message;
+    });
+  });
+
+  fileInput.addEventListener('change', function () {
+    fileRows.innerHTML = '';
+    Array.prototype.forEach.call(fileInput.files, function (file, index) {
+      var row = document.createElement('div');
+      row.className = 'file-row';
+      row.innerHTML =
+        '<strong>' + file.name + '</strong>' +
+        '<label>Caption</label>' +
+        '<textarea data-index="' + index + '" placeholder="Write the caption for this post..."></textarea>';
+      fileRows.appendChild(row);
+    });
+    uploadBtn.disabled = fileInput.files.length === 0;
+  });
+
+  uploadBtn.addEventListener('click', function () {
+    var files = Array.prototype.slice.call(fileInput.files);
+    if (!files.length) return;
+
+    if (!CLOUDINARY_CLOUD_NAME || !CLOUDINARY_UPLOAD_PRESET) {
+      uploadStatus.className = 'status-msg error';
+      uploadStatus.textContent = 'Cloudinary is not configured on this page yet (set MBT_CLOUDINARY_CLOUD_NAME / MBT_CLOUDINARY_UPLOAD_PRESET).';
+      return;
+    }
+
+    uploadBtn.disabled = true;
+    uploadStatus.className = 'status-msg';
+    uploadStatus.textContent = 'Uploading 0 / ' + files.length + '...';
+
+    var captions = fileRows.querySelectorAll('textarea');
+    var done = 0;
+
+    var uploads = files.map(function (file, index) {
+      var resourceType = file.type.indexOf('video') === 0 ? 'video' : 'image';
+      var formData = new FormData();
+      formData.append('file', file);
+      formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
+
+      var cloudinaryUrl = 'https://api.cloudinary.com/v1_1/' + CLOUDINARY_CLOUD_NAME + '/' + resourceType + '/upload';
+
+      return fetch(cloudinaryUrl, { method: 'POST', body: formData })
+        .then(function (res) { return res.json(); })
+        .then(function (data) {
+          if (!data.secure_url) throw new Error('Cloudinary upload failed for ' + file.name);
+          return fetch('/.netlify/functions/queue-add', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              url: data.secure_url,
+              resourceType: resourceType,
+              caption: captions[index] ? captions[index].value : '',
+            }),
+          });
+        })
+        .then(function (res) {
+          if (!res.ok) throw new Error('Failed to queue ' + file.name);
+          done += 1;
+          uploadStatus.textContent = 'Uploading ' + done + ' / ' + files.length + '...';
+        });
+    });
+
+    Promise.all(uploads).then(function () {
+      uploadStatus.className = 'status-msg ok';
+      uploadStatus.textContent = 'Queued ' + files.length + ' item(s).';
+      fileInput.value = '';
+      fileRows.innerHTML = '';
+      uploadBtn.disabled = true;
+      loadQueue();
+    }).catch(function (err) {
+      uploadStatus.className = 'status-msg error';
+      uploadStatus.textContent = err.message;
+      uploadBtn.disabled = false;
+    });
+  });
+
+  document.getElementById('refresh-btn').addEventListener('click', loadQueue);
+
+  function cell(text) {
+    var td = document.createElement('td');
+    td.textContent = text;
+    return td;
+  }
+
+  function loadQueue() {
+    fetch('/.netlify/functions/queue-list')
+      .then(function (res) { return res.json().then(function (data) { return { ok: res.ok, data: data }; }); })
+      .then(function (result) {
+        queueTableBody.innerHTML = '';
+        if (!result.ok) {
+          var tr = document.createElement('tr');
+          var td = document.createElement('td');
+          td.colSpan = 4;
+          td.className = 'status-msg error';
+          td.textContent = (result.data && result.data.error) || 'Could not load the queue.';
+          tr.appendChild(td);
+          queueTableBody.appendChild(tr);
+          return;
+        }
+        (result.data.items || []).forEach(function (item) {
+          var tr = document.createElement('tr');
+          var when = item.postedAt || item.createdAt;
+          tr.appendChild(cell(new Date(when).toLocaleString()));
+          tr.appendChild(cell(item.resourceType));
+          tr.appendChild(cell((item.caption || '').slice(0, 60)));
+          var statusTd = document.createElement('td');
+          var pill = document.createElement('span');
+          pill.className = 'pill pill-' + item.status;
+          pill.textContent = item.status;
+          statusTd.appendChild(pill);
+          tr.appendChild(statusTd);
+          queueTableBody.appendChild(tr);
+        });
+      });
+  }
+})();
+</script>
+</body>
+</html>

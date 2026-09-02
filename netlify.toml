@@ -1,0 +1,15 @@
+[build]
+publish = "."
+
+[functions]
+directory = "netlify/functions"
+node_bundler = "esbuild"
+
+[functions.instagram-post-daily]
+schedule = "0 9 * * *"
+
+[functions.instagram-finish-processing]
+schedule = "*/10 * * * *"
+
+[functions.instagram-refresh-token]
+schedule = "0 0 1 * *"

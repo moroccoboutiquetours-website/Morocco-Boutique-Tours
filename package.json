@@ -1,0 +1,9 @@
+{
+  "name": "moroccoboutiquetours-site",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Static marketing site for Morocco Boutique Tours, plus Netlify Functions powering the private Instagram auto-poster.",
+  "dependencies": {
+    "@netlify/blobs": "^8.1.0"
+  }
+}
