@@ -4,10 +4,22 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this is
 
-Static HTML/CSS/JS marketing site for Morocco Boutique Tours (a private, chauffeur-driven Morocco tour operator). No build system, no package manager, no framework — every page is a hand-authored, self-contained `.html` file sharing one stylesheet (`css/style.css`) and one script (`js/script.js`).
+Static HTML/CSS/JS marketing site for Morocco Boutique Tours (a private, chauffeur-driven Morocco tour operator). No build system, no package manager, no framework — every page is a hand-authored, self-contained `.html` file sharing one stylesheet (`css/style.css`) and one script (`js/script.js`). The one exception is the Instagram auto-poster (see below), which is a small serverless backend layered on top via Netlify Functions.
+
+## Instagram auto-poster
+
+`instagram-queue.html` is a private, password-gated, `noindex` admin page (not linked from nav/footer/sitemap) for queuing Instagram posts. Backed by `netlify/functions/`:
+- `login.js` — password check against `UPLOAD_PAGE_PASSWORD`, sets a signed HttpOnly cookie (see `_lib/auth.js`).
+- `queue-add.js` / `queue-list.js` — read/write a JSON manifest of queued posts in Netlify Blobs (`_lib/queue.js`). The page itself uploads photos/videos directly to Cloudinary (unsigned preset, `window.MBT_CLOUDINARY_CLOUD_NAME`/`MBT_CLOUDINARY_UPLOAD_PRESET` at the top of the page) so large video files never pass through a Netlify Function — only the resulting public URL + caption reach `queue-add`.
+- `instagram-post-daily.js` — scheduled (`netlify.toml`, cron `0 9 * * *` UTC ≈ 10:00 Morocco time) function that takes the oldest pending queue item and creates its Instagram Graph API media container. Photos publish immediately; videos (posted as Reels) can't — Instagram needs processing time that can outlast a single function call — so the item is left in `processing` status instead.
+- `instagram-finish-processing.js` — scheduled every 10 minutes, publishes any `processing` video once Instagram reports it's ready (or marks it `failed` after a 30-minute timeout). This two-function split avoids needing Netlify Background Functions, which require a paid plan.
+- `instagram-refresh-token.js` — scheduled monthly, exchanges the current long-lived access token for a fresh one before it expires (`_lib/token.js` stores the live token in Blobs; `META_APP_ID`/`META_APP_SECRET` stay in env vars).
+
+Required Netlify environment variables: `META_APP_ID`, `META_APP_SECRET`, `IG_ACCESS_TOKEN` (seed), `IG_BUSINESS_ACCOUNT_ID`, `UPLOAD_PAGE_PASSWORD`, `COOKIE_SIGNING_SECRET`. The Cloudinary cloud name/preset are not secret and are set directly in `instagram-queue.html`.
 
 ## Commands
 
+- **Install dependencies:** `npm install` — only needed for the Netlify Functions (`@netlify/blobs`); the static pages themselves have no dependencies.
 - **Local preview:** `npx --yes serve -l 5173 .` (also wired up as the `static-site` launch config in `.claude/launch.json`), then open `http://localhost:5173`.
 - **Deploy (draft/preview):** `npx --yes netlify-cli deploy --dir=.` — site is linked via `.netlify/` (site name `moroccoboutiquetours`). Never run with `--prod` unless the user explicitly confirms a production push.
 - There is no build, lint, or test step — pages are plain HTML and are verified by opening/screenshotting them.

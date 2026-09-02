@@ -1,2 +1,12 @@
 # Local Netlify folder
 .netlify
+
+# Local env vars (secrets) — never commit
+.env
+.env.local
+
+# Dependencies
+node_modules
+
+# Netlify Dev local edge-functions bootstrap artifact
+deno.lock
