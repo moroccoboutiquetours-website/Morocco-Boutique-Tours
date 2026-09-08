@@ -33,7 +33,7 @@ Required Netlify environment variables: `META_APP_ID`, `META_APP_SECRET`, `IG_AC
 - `tour-*.html` — individual signature-journey itinerary pages (e.g. `tour-7-day-casablanca-fes-sahara.html`), 37 and growing. Each embeds full SEO meta (canonical, Open Graph, Twitter card) and a `TouristTrip` JSON-LD schema block with per-day itinerary and pricing offers.
 - `tailored-tours-{city}.html` — "tailor-made from X" landing pages, one per departure city (Casablanca, Marrakech, Fes, Agadir, Tangier), each linking out to a curated subset of the real `tour-*.html` itineraries departing from that city.
 - `blog-*.html` — blog articles, indexed from `blog.html`.
-- Top-level pages: `index.html`, `tours.html`, `tailor-made.html`, `destinations.html`, `our-story.html`, `contact.html`, `faqs.html`, `thank-you.html`.
+- Top-level pages: `index.html`, `tours.html`, `tailor-made.html`, `destinations.html`, `our-story.html`, `contact.html`, `faqs.html`, `thank-you.html`, `privacy-policy.html`.
 
 **Shared page skeleton** (present on every page): Google Fonts preconnect (Cormorant Garamond + Jost) → `css/style.css` → `<header class="site-header">` with logo, hamburger `.nav-toggle`, `.main-nav` (including a `.nav-dropdown` for the tailored-tours submenu) → page content sections built from reusable CSS block classes (`.hero`, `.section-sand`, `.section-teal`, `.split`, `.card`, `.grid-3`/`.grid-4`, `.content-panel`, `.itinerary-day`, `.includes-panel`, `.price-box`, `.testimonial`, `.contact-panel`, `.cta-band`) → `<footer class="site-footer">` with a 4-column link/contact grid → `js/script.js`.
 
