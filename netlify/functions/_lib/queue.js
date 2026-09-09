@@ -3,7 +3,11 @@ const { getStore } = require('@netlify/blobs');
 const MANIFEST_KEY = 'manifest.json';
 
 function store() {
-  return getStore('instagram-queue');
+  return getStore({
+    name: 'instagram-queue',
+    siteID: process.env.NETLIFY_SITE_ID || '694b6ff7-3f78-485a-895e-a35ff2698dcd',
+    token: process.env.NETLIFY_BLOBS_TOKEN,
+  });
 }
 
 async function readManifest() {
