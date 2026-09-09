@@ -86,6 +86,28 @@
   var CLOUDINARY_CLOUD_NAME = window.MBT_CLOUDINARY_CLOUD_NAME || '';
   var CLOUDINARY_UPLOAD_PRESET = window.MBT_CLOUDINARY_UPLOAD_PRESET || '';
 
+  // Reel background music: rotates through a small set of Meta Sound Collection
+  // tracks (uploaded once to the "reel-music" folder in this Cloudinary account)
+  // so videos don't rely on Instagram's in-app music library, which isn't
+  // reachable through the Graph API used for automated posting.
+  var REEL_MUSIC_TRACKS = ['Akal', 'Amenntru', 'Izlan', 'Lalla_Rouqiya', 'Morocco'];
+  var MUSIC_INDEX_KEY = 'mbt_reel_music_index';
+
+  function nextMusicTrack() {
+    var index = parseInt(localStorage.getItem(MUSIC_INDEX_KEY), 10);
+    if (isNaN(index)) index = 0;
+    var track = REEL_MUSIC_TRACKS[index % REEL_MUSIC_TRACKS.length];
+    localStorage.setItem(MUSIC_INDEX_KEY, String(index + 1));
+    return track;
+  }
+
+  function withBackgroundMusic(publicId, format) {
+    var track = nextMusicTrack();
+    return 'https://res.cloudinary.com/' + CLOUDINARY_CLOUD_NAME +
+      '/video/upload/ac_none/l_video:' + track + ',fl_layer_apply/' +
+      publicId + '.' + (format || 'mp4');
+  }
+
   var loginPanel = document.getElementById('login-panel');
   var appHidden = document.getElementById('app-hidden');
   var loginError = document.getElementById('login-error');
@@ -155,11 +177,14 @@
         .then(function (res) { return res.json(); })
         .then(function (data) {
           if (!data.secure_url) throw new Error('Cloudinary upload failed for ' + file.name);
+          var url = resourceType === 'video'
+            ? withBackgroundMusic(data.public_id, data.format)
+            : data.secure_url;
           return fetch('/.netlify/functions/queue-add', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-              url: data.secure_url,
+              url: url,
               resourceType: resourceType,
               caption: captions[index] ? captions[index].value : '',
             }),
