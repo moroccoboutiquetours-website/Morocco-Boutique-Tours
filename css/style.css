@@ -1418,6 +1418,7 @@ a.dest-chip:hover h4 { color: var(--color-terracotta); }
 @media (max-width: 600px) {
   .article-meta { flex-wrap: wrap; gap: 4px 10px; }
   .article-meta span, .article-meta time { white-space: nowrap; }
+}
 
 /* ---------- WhatsApp contact ---------- */
 

@@ -148,12 +148,29 @@ document.addEventListener('DOMContentLoaded', function () {
     whatsappLink.setAttribute('aria-label', 'Chat with us on WhatsApp');
     whatsappLink.innerHTML =
       '<span class="whatsapp-fab-icon">' +
-        '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">' +
+        '<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true">' +
           '<path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.48 1.34 4.99L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21h.005c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0012.04 2zm5.83 14.17c-.24.68-1.4 1.32-1.94 1.4-.5.08-1.12.11-1.81-.11-.42-.13-.95-.3-1.64-.6-2.88-1.24-4.76-4.13-4.9-4.32-.14-.19-1.17-1.55-1.17-2.96 0-1.41.74-2.1 1-2.39.26-.29.58-.36.77-.36.19 0 .39.002.56.01.18.008.42-.07.66.5.24.58.82 2 .89 2.15.07.15.12.32.02.52-.1.19-.15.31-.29.48-.14.17-.3.38-.43.51-.14.14-.29.29-.13.57.16.28.71 1.17 1.53 1.9 1.05.94 1.94 1.23 2.22 1.37.28.14.44.12.6-.07.16-.19.68-.79.87-1.06.19-.27.37-.22.62-.13.25.09 1.6.75 1.87.89.27.14.46.21.52.32.07.11.07.65-.17 1.33z"/>' +
         '</svg>' +
       '</span>' +
       '<span class="whatsapp-fab-label">Chat on WhatsApp</span>';
     document.body.appendChild(whatsappLink);
+
+    // While the cookie banner is showing, keep the button clear of it. The
+    // banner's height changes with screen width (its text wraps), so the fixed
+    // CSS offsets (116px / 168px) aren't always enough on tablets and phones.
+    function clearCookieBanner() {
+      var banner = document.querySelector('.cookie-banner');
+      if (!banner || !document.body.classList.contains('has-cookie-banner')) {
+        whatsappLink.style.bottom = '';
+        return;
+      }
+      var small = window.innerWidth <= 640;
+      var needed = banner.offsetHeight + (small ? 16 : 28);
+      whatsappLink.style.bottom = Math.max(small ? 168 : 116, needed) + 'px';
+    }
+    clearCookieBanner();
+    window.addEventListener('resize', clearCookieBanner);
+    new MutationObserver(clearCookieBanner).observe(document.body, { attributes: true, attributeFilter: ['class'] });
 
     // Ease in shortly after load rather than appearing abruptly on top of content.
     setTimeout(function () { whatsappLink.classList.add('is-visible'); }, 500);
