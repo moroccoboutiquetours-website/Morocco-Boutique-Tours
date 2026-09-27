@@ -645,6 +645,11 @@ a.dest-chip:hover h4 { color: var(--color-terracotta); }
 .footer-grid ul { list-style: none; margin: 0; padding: 0; }
 .footer-grid li { margin-bottom: 11px; font-size: 0.9rem; }
 .footer-grid a:hover { color: var(--color-gold); }
+/* On very narrow phones the long email address can't fit its column and
+   widens the whole page; let it wrap there only. */
+@media (max-width: 380px) {
+  .footer-grid a { overflow-wrap: anywhere; }
+}
 
 .footer-bottom {
   border-top: 1px solid rgba(251,248,242,0.12);
