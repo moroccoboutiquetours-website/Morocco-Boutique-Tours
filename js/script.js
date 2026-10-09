@@ -96,7 +96,7 @@ document.addEventListener('DOMContentLoaded', function () {
     banner.setAttribute('aria-label', 'Cookie consent');
     banner.innerHTML =
       '<div class="cookie-banner-inner">' +
-        '<p>We use cookies to understand how visitors use this site. You can accept or decline analytics cookies — see our <a href="privacy-policy.html">Privacy Policy</a>.</p>' +
+        '<p>We use cookies to understand how visitors use this site. You can accept or decline analytics cookies — see our <a href="/privacy-policy">Privacy Policy</a>.</p>' +
         '<div class="cookie-banner-actions">' +
           '<button type="button" class="btn btn-dark cookie-decline">Decline</button>' +
           '<button type="button" class="btn btn-solid cookie-accept">Accept</button>' +

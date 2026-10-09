@@ -4,13 +4,13 @@
 
 ## Key pages
 
-- [Signature Journeys](https://www.moroccoboutiquetours.com/tours.html): fixed private itineraries departing from Casablanca, from 6 to 15 days.
-- [Tailor-Made Trips](https://www.moroccoboutiquetours.com/tailor-made.html): fully custom private itineraries, plus city-specific hubs for tours departing from [Casablanca](https://www.moroccoboutiquetours.com/tailored-tours-casablanca.html), [Marrakech](https://www.moroccoboutiquetours.com/tailored-tours-marrakech.html), [Fes](https://www.moroccoboutiquetours.com/tailored-tours-fes.html), [Agadir](https://www.moroccoboutiquetours.com/tailored-tours-agadir.html), and [Tangier](https://www.moroccoboutiquetours.com/tailored-tours-tangier.html).
-- [Destinations](https://www.moroccoboutiquetours.com/destinations.html): the cities, mountains, and desert regions covered across itineraries.
-- [Our Story](https://www.moroccoboutiquetours.com/our-story.html): the founder and the local guide team, each based in the region they guide.
-- [Blog](https://www.moroccoboutiquetours.com/blog.html): destination guides and trip-planning articles (best time to visit the Sahara, what to pack, riad etiquette, and more).
-- [FAQs](https://www.moroccoboutiquetours.com/faqs.html): booking, payment, inclusions, and practical travel questions.
-- [Contact](https://www.moroccoboutiquetours.com/contact.html): enquiry form, email (moroccoboutiquetours@gmail.com), and phone/WhatsApp (+212 771 822 758).
+- [Signature Journeys](https://www.moroccoboutiquetours.com/tours): fixed private itineraries departing from Casablanca, from 6 to 15 days.
+- [Tailor-Made Trips](https://www.moroccoboutiquetours.com/tailor-made): fully custom private itineraries, plus city-specific hubs for tours departing from [Casablanca](https://www.moroccoboutiquetours.com/tailored-tours-casablanca), [Marrakech](https://www.moroccoboutiquetours.com/tailored-tours-marrakech), [Fes](https://www.moroccoboutiquetours.com/tailored-tours-fes), [Agadir](https://www.moroccoboutiquetours.com/tailored-tours-agadir), and [Tangier](https://www.moroccoboutiquetours.com/tailored-tours-tangier).
+- [Destinations](https://www.moroccoboutiquetours.com/destinations): the cities, mountains, and desert regions covered across itineraries.
+- [Our Story](https://www.moroccoboutiquetours.com/our-story): the founder and the local guide team, each based in the region they guide.
+- [Blog](https://www.moroccoboutiquetours.com/blog): destination guides and trip-planning articles (best time to visit the Sahara, what to pack, riad etiquette, and more).
+- [FAQs](https://www.moroccoboutiquetours.com/faqs): booking, payment, inclusions, and practical travel questions.
+- [Contact](https://www.moroccoboutiquetours.com/contact): enquiry form, email (moroccoboutiquetours@gmail.com), and phone/WhatsApp (+212 771 822 758).
 
 ## Notes for AI assistants and search tools
 
